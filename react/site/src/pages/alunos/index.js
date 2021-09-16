@@ -6,9 +6,6 @@ import { Container, Conteudo } from './styled'
 
 import { useState, useEffect, React, useRef } from 'react'
 
-
-
-
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -46,25 +43,25 @@ export default function Index() {
 
     async function inserir () {
         loading.current.continuousStart();
-        if(chamada > 0){
-        if(idAlterando === 0){
-            let r = await api.inserir(nome, chamada, curso, turma);
-            if(r.erro)
+        
+        if(nome !== ('') && chamada > 0 && turma !== ('') && curso !== ('')){
+            if(idAlterando === 0){
+                let r = await api.inserir(nome, chamada, curso, turma);
+                if(r.erro)
+                    toast.dark(r.erro)
+                else
+                    toast.dark('Aluno cadastrado com sucesso!')
+            } else {
+                let r = await api.alterar(idAlterando, nome, chamada, curso, turma);
+                if (r.erro)
                 toast.dark(r.erro)
-            else
-                toast.dark('Aluno inserido!')}
-
-        } else {
-            let r = await api.alterar(idAlterando, nome, chamada, curso, turma);
-            if (r.erro)
-               toast.dark(r.erro)
-            else
-            toast.dark('Aluno alterado!')
-        } if (chamada < 0) (
-            toast.dark('Chamada Inválida')
+                else
+                    toast.dark('Aluno alterado com sucesso!')
+            }
+        } else (
+                toast.dark('Campos inválidos! Faça as alterações e tente novamente!.')
         )
-
-        limparCampos();
+        
         listar();
         loading.current.complete()
     }
