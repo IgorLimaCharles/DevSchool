@@ -63,6 +63,7 @@ export default function Index() {
         )
         
         listar();
+        limparCampos();
         loading.current.complete()
     }
 
